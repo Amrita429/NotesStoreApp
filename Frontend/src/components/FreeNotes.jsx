@@ -1,18 +1,35 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Slider from "react-slick";
 
-import list from "../../public/list.json";
+import axios from 'axios'
+//import list from "../../public/list.json";
 import Cards from './Cards';
 
 //this list is an array only
 
 function FreeNotes() {
+  const [notes, setNotes] = useState([])   //now our data is in this "notes"
+  useEffect(()=>{
+      const getNotes=async()=>{
+          try {
+            const res = await axios.get("http://localhost:4001/notes");   //we are calling this api
+            //console.log(res.data)
+            const data = res.data.filter((data) => data.category === "Free");
+            console.log(data);
+            setNotes(data);
+          } catch (error) {
+              console.log(error)
+          }
+      }
+      getNotes();
+  },[])
+
     //to filter data using filter function of js used on arrays
     //=== means check type as well as data
-    const filterData = list.filter((data) => data.category === "Free");
+    //const filterData = list.filter((data) => data.category === "Free"); now no use humne setNotes mein use kr liya ise
     
     var settings = {
         dots: true,
@@ -63,7 +80,7 @@ function FreeNotes() {
     <div>
     
     <Slider {...settings}>
-        {filterData.map((item)=>(
+        {notes.map((item)=>(
             //<Cards/>
             <Cards item={item} key={item.id} /> 
              //here filterdata is an array and we are using map to map cards

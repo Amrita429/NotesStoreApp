@@ -1,6 +1,8 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import { useForm } from "react-hook-form"
+import axios from 'axios'
+import toast from 'react-hot-toast'
 
 function Login() {
     const {
@@ -9,7 +11,36 @@ function Login() {
         formState: { errors },
       } = useForm()
     
-      const onSubmit = (data) => console.log(data)
+      const onSubmit = async(data) => {
+        const userInfo = {
+          email: data.email,
+          password: data.password
+        }
+        await axios
+        .post('http://localhost:4001/user/login', userInfo)
+        //this then return promise, prommise gets either resolve or reject... if res then succ, resolve else rehect
+        .then((res)=>{
+          console.log(res.data);
+          if(res.data){
+            //alert("Login Successful");
+            toast.success('Login Successful!');
+            document.getElementById("my_modal_3").close();
+            setTimeout(()=>{
+              window.location.reload();
+              localStorage.setItem("Users", JSON.stringify(res.data.user));  //we used JSON.stringify to show data in exact from in local storage os browser
+              //now we can use this locally stored data wherever we want by creating context api
+            },1000);   //timer set to 1 sec taaki our toast remains on screen for 1sec
+            
+          }  
+        }).catch((err) => {
+          if(err.response){
+            console.log(err);
+          //alert("Error: " + err.response.data.message);
+          toast.error("Error: " + err.response.data.message);
+          setTimeout(()=>{},2000);
+          }
+        });
+      }
 
   return (
     <div>

@@ -1,0 +1,4 @@
+username: amritapandey429
+mongodb notesstore cluster password: 8IiPcgx4V2bZG3Oc
+mongodb uri = mongodb+srv://amritapandey429:8IiPcgx4V2bZG3Oc@notesstore.u3hxenc.mongodb.net/?retryWrites=true&w=majority&appName=NotesStore
+mongodb+srv://amritapandey429:8IiPcgx4V2bZG3Oc@notesstore.u3hxenc.mongodb.net/NotesStore   (this one is fetched from mongodb compass anf finally used)
